@@ -1,6 +1,5 @@
 let WORDS = [];
 
-// LOAD WORD LIST
 fetch("words.txt")
   .then(res => res.text())
   .then(text => {
@@ -8,7 +7,8 @@ fetch("words.txt")
     startGame();
   });
 
-let target, row, col, current, guesses;
+let target, row, col, current;
+let guesses = [];
 let keyColors = {};
 
 function getDailyWord() {
@@ -24,6 +24,7 @@ function startGame() {
   col = 0;
   current = "";
   guesses = [];
+  keyColors = {};
 
   createBoard();
   createKeyboard();
@@ -52,41 +53,78 @@ function createKeyboard() {
   const keyboard = document.getElementById("keyboard");
   keyboard.innerHTML = "";
 
-  "QWERTYUIOPASDFGHJKLZXCVBNM".split("").forEach(k=>{
-    const btn = document.createElement("div");
-    btn.className = "key";
-    btn.innerText = k;
-    btn.onclick = ()=>press(k);
-    keyboard.appendChild(btn);
+  const layout = [
+    "QWERTYUIOP",
+    "ASDFGHJKL",
+    "ZXCVBNM"
+  ];
+
+  layout.forEach((rowLetters, i)=>{
+    const rowDiv = document.createElement("div");
+    rowDiv.className = "key-row";
+
+    if(i === 2){
+      rowDiv.appendChild(createKey("ENTER", true));
+    }
+
+    rowLetters.split("").forEach(l=>{
+      rowDiv.appendChild(createKey(l));
+    });
+
+    if(i === 2){
+      rowDiv.appendChild(createKey("⌫", true));
+    }
+
+    keyboard.appendChild(rowDiv);
   });
+}
+
+function createKey(label, wide=false){
+  const btn = document.createElement("div");
+  btn.className = "key";
+  if(wide) btn.classList.add("wide");
+
+  btn.innerText = label;
+  btn.onclick = () => handleKey(label);
+
+  return btn;
+}
+
+function handleKey(key){
+  if(key === "ENTER") submit();
+  else if(key === "⌫") backspace();
+  else press(key);
 }
 
 function press(letter){
   if(col<5){
-    board.children[row].children[col].innerText = letter;
+    const tile = board.children[row].children[col];
+    tile.innerText = letter;
+    tile.classList.add("pop");
+    setTimeout(()=>tile.classList.remove("pop"),100);
+
     current += letter;
     col++;
   }
 }
 
-document.addEventListener("keydown", e=>{
-  if(e.key==="Backspace"){
-    if(col>0){
-      col--;
-      board.children[row].children[col].innerText="";
-      current=current.slice(0,-1);
-    }
+function backspace(){
+  if(col>0){
+    col--;
+    board.children[row].children[col].innerText="";
+    current=current.slice(0,-1);
   }
+}
+
+document.addEventListener("keydown", e=>{
+  if(e.key==="Backspace") backspace();
   else if(e.key==="Enter") submit();
   else if(/^[a-zA-Z]$/.test(e.key)) press(e.key.toUpperCase());
 });
 
 function submit(){
   if(current.length<5) return shake();
-
-  if(!WORDS.includes(current)){
-    return shake();
-  }
+  if(!WORDS.includes(current)) return shake();
 
   const colors = evaluate(current);
   guesses.push(colors);
@@ -121,27 +159,29 @@ function submit(){
 }
 
 function evaluate(guess){
-  const res = Array(5).fill("gray");
-  let temp = target.split("");
+  const result = Array(5).fill("gray");
+  const targetArr = target.split("");
 
   for(let i=0;i<5;i++){
     if(guess[i]===target[i]){
-      res[i]="green";
-      temp[i]=null;
+      result[i]="green";
+      targetArr[i]=null;
     }
   }
 
   for(let i=0;i<5;i++){
-    if(res[i]==="gray" && temp.includes(guess[i])){
-      res[i]="yellow";
-      temp[temp.indexOf(guess[i])] = null;
+    if(result[i]==="gray"){
+      const idx = targetArr.indexOf(guess[i]);
+      if(idx!==-1){
+        result[i]="yellow";
+        targetArr[idx]=null;
+      }
     }
   }
 
-  return res;
+  return result;
 }
 
-// KEY PRIORITY (important!)
 function updateKey(letter, color){
   const priority = {gray:1, yellow:2, green:3};
 
@@ -184,7 +224,6 @@ function showPopup(win){
   updateCountdown();
 }
 
-// COUNTDOWN
 function updateCountdown(){
   const now = new Date();
   const tomorrow = new Date();
@@ -202,7 +241,6 @@ function updateCountdown(){
   setTimeout(updateCountdown,1000);
 }
 
-// SHARE
 function copyResult(){
   let text = "Wordle Clone\n\n";
 
@@ -221,7 +259,6 @@ function restart(){
   location.reload();
 }
 
-// TIMER TOP
 function updateTimer(){
   const now = new Date();
   const tomorrow = new Date();

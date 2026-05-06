@@ -27,12 +27,12 @@
 
       <p>
         Each guess must be a valid 5-letter word.
-        Hit the enter button to submit.
+        Hit enter to submit.
       </p>
 
       <p>
         After each guess, the color of the tiles
-        will change to show how close your guess was.
+        changes to show how close your guess was.
       </p>
 
       <hr>
@@ -40,52 +40,46 @@
       <h3>Examples</h3>
 
       <div class="example-row">
-
         <div class="example-tile green">G</div>
         <div class="example-tile">A</div>
         <div class="example-tile">M</div>
         <div class="example-tile">E</div>
         <div class="example-tile">S</div>
-
       </div>
 
       <p>
-        The letter G is in the word and in the correct spot.
+        G is in the word and in the correct spot.
       </p>
 
       <div class="example-row">
-
         <div class="example-tile">H</div>
         <div class="example-tile yellow">O</div>
         <div class="example-tile">T</div>
         <div class="example-tile">E</div>
         <div class="example-tile">L</div>
-
       </div>
 
       <p>
-        The letter O is in the word but in the wrong spot.
+        O is in the word but in the wrong spot.
       </p>
 
       <div class="example-row">
-
         <div class="example-tile">C</div>
         <div class="example-tile">L</div>
         <div class="example-tile">I</div>
         <div class="example-tile gray">C</div>
         <div class="example-tile">K</div>
-
       </div>
 
       <p>
-        The letter C is not in the word in any spot.
+        C is not in the word in any spot.
       </p>
 
     </div>
 
   </div>
 
-  <!-- MAIN APP -->
+  <!-- MAIN -->
 
   <div class="container">
 
@@ -107,7 +101,7 @@
 
   </div>
 
-  <!-- WIN MODAL -->
+  <!-- RESULT MODAL -->
 
   <div id="popup" class="hidden">
 
@@ -119,8 +113,16 @@
 
       <p id="countdown"></p>
 
-      <button id="share-btn" onclick="copyResult()">
+      <button class="main-btn" onclick="copyResult()">
         Share
+      </button>
+
+      <button class="secondary-btn" onclick="admirePuzzle()">
+        Admire Puzzle
+      </button>
+
+      <button class="secondary-btn" onclick="startUnlimitedMode()">
+        Unlimited Mode
       </button>
 
     </div>

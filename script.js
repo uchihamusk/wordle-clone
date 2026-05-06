@@ -1,11 +1,14 @@
 let WORDS = [];
 
 let target;
+
 let row = 0;
 let col = 0;
+
 let current = "";
 
 let guesses = [];
+
 let keyColors = {};
 
 let animating = false;
@@ -24,46 +27,64 @@ fetch("words.txt")
     startGame();
   });
 
-function getDailyWord() {
+function getPuzzleNumber() {
 
-  const start = new Date(2022,0,1);
+  const start = new Date(2022, 0, 1);
+
   const today = new Date();
 
-  const diff =
-    Math.floor((today - start)/(1000*60*60*24));
-
-  return WORDS[diff % WORDS.length];
+  return Math.floor(
+    (today - start) /
+    (1000 * 60 * 60 * 24)
+  );
 }
 
-function startGame(){
+function getDailyWord() {
+
+  const puzzleNumber =
+    getPuzzleNumber();
+
+  return WORDS[
+    puzzleNumber % WORDS.length
+  ];
+}
+
+function startGame() {
 
   target = getDailyWord();
 
   row = 0;
   col = 0;
+
   current = "";
 
   guesses = [];
+
   keyColors = {};
 
   createBoard();
+
   createKeyboard();
 
   updateTimer();
 }
 
-function createBoard(){
+function createBoard() {
 
   board.innerHTML = "";
 
-  for(let r=0; r<6; r++){
+  for (let r = 0; r < 6; r++) {
 
-    const rowDiv = document.createElement("div");
+    const rowDiv =
+      document.createElement("div");
+
     rowDiv.className = "row";
 
-    for(let c=0; c<5; c++){
+    for (let c = 0; c < 5; c++) {
 
-      const tile = document.createElement("div");
+      const tile =
+        document.createElement("div");
+
       tile.className = "tile";
 
       rowDiv.appendChild(tile);
@@ -73,7 +94,7 @@ function createBoard(){
   }
 }
 
-function createKeyboard(){
+function createKeyboard() {
 
   const keyboard =
     document.getElementById("keyboard");
@@ -86,34 +107,45 @@ function createKeyboard(){
     "ZXCVBNM"
   ];
 
-  layout.forEach((letters, index)=>{
+  layout.forEach((letters, index) => {
 
-    const rowDiv = document.createElement("div");
+    const rowDiv =
+      document.createElement("div");
+
     rowDiv.className = "key-row";
 
-    if(index === 2){
-      rowDiv.appendChild(createKey("ENTER", true));
+    if (index === 2) {
+      rowDiv.appendChild(
+        createKey("ENTER", true)
+      );
     }
 
-    letters.split("").forEach(letter=>{
-      rowDiv.appendChild(createKey(letter));
+    letters.split("").forEach(letter => {
+
+      rowDiv.appendChild(
+        createKey(letter)
+      );
+
     });
 
-    if(index === 2){
-      rowDiv.appendChild(createKey("⌫", true));
+    if (index === 2) {
+      rowDiv.appendChild(
+        createKey("⌫", true)
+      );
     }
 
     keyboard.appendChild(rowDiv);
   });
 }
 
-function createKey(label, wide=false){
+function createKey(label, wide = false) {
 
-  const key = document.createElement("div");
+  const key =
+    document.createElement("div");
 
   key.className = "key";
 
-  if(wide){
+  if (wide) {
     key.classList.add("wide");
   }
 
@@ -124,16 +156,16 @@ function createKey(label, wide=false){
   return key;
 }
 
-function handleKey(key){
+function handleKey(key) {
 
-  if(animating) return;
+  if (animating) return;
 
-  if(key === "ENTER"){
+  if (key === "ENTER") {
     submit();
     return;
   }
 
-  if(key === "⌫"){
+  if (key === "⌫") {
     backspace();
     return;
   }
@@ -141,9 +173,9 @@ function handleKey(key){
   press(key);
 }
 
-function press(letter){
+function press(letter) {
 
-  if(col >= 5) return;
+  if (col >= 5) return;
 
   const tile =
     board.children[row].children[col];
@@ -151,20 +183,21 @@ function press(letter){
   tile.innerText = letter;
 
   tile.classList.add("filled");
+
   tile.classList.add("pop");
 
-  setTimeout(()=>{
+  setTimeout(() => {
     tile.classList.remove("pop");
-  },120);
+  }, 120);
 
   current += letter;
 
   col++;
 }
 
-function backspace(){
+function backspace() {
 
-  if(col <= 0) return;
+  if (col <= 0) return;
 
   col--;
 
@@ -176,78 +209,79 @@ function backspace(){
   tile.classList.remove("filled");
 
   current =
-    current.slice(0,-1);
+    current.slice(0, -1);
 }
 
-document.addEventListener("keydown", e=>{
+document.addEventListener("keydown", e => {
 
-  if(animating) return;
+  if (animating) return;
 
-  if(e.key === "Enter"){
+  if (e.key === "Enter") {
     submit();
     return;
   }
 
-  if(e.key === "Backspace"){
+  if (e.key === "Backspace") {
     backspace();
     return;
   }
 
-  if(/^[a-zA-Z]$/.test(e.key)){
+  if (/^[a-zA-Z]$/.test(e.key)) {
     press(e.key.toUpperCase());
   }
 });
 
-function submit(){
+function submit() {
 
-  if(current.length < 5){
+  if (current.length < 5) {
     shake();
     return;
   }
 
-  if(!WORDS.includes(current)){
+  if (!WORDS.includes(current)) {
     shake();
     return;
   }
 
   animating = true;
 
-  const colors = evaluate(current);
+  const colors =
+    evaluate(current);
 
   guesses.push(colors);
 
-  for(let i=0; i<5; i++){
+  const guessedWord = current;
+
+  for (let i = 0; i < 5; i++) {
 
     const tile =
       board.children[row].children[i];
 
-    setTimeout(()=>{
+    setTimeout(() => {
 
       tile.style.transform =
         "rotateX(90deg)";
 
-      setTimeout(()=>{
+      setTimeout(() => {
 
         tile.classList.add(colors[i]);
 
         updateKey(
-          current[i],
+          guessedWord[i],
           colors[i]
         );
 
         tile.style.transform =
           "rotateX(0deg)";
 
-      },125);
+      }, 125);
 
     }, i * 320);
   }
 
-  const guessedWord = current;
+  setTimeout(() => {
 
-  setTimeout(()=>{
-
-    if(guessedWord === target){
+    if (guessedWord === target) {
 
       showPopup(true);
 
@@ -257,10 +291,12 @@ function submit(){
     }
 
     row++;
+
     col = 0;
+
     current = "";
 
-    if(row === 6){
+    if (row === 6) {
 
       showPopup(false);
 
@@ -274,7 +310,7 @@ function submit(){
   }, 1900);
 }
 
-function evaluate(guess){
+function evaluate(guess) {
 
   const result =
     Array(5).fill("gray");
@@ -282,11 +318,9 @@ function evaluate(guess){
   const temp =
     target.split("");
 
-  /* greens */
+  for (let i = 0; i < 5; i++) {
 
-  for(let i=0; i<5; i++){
-
-    if(guess[i] === target[i]){
+    if (guess[i] === target[i]) {
 
       result[i] = "green";
 
@@ -294,16 +328,14 @@ function evaluate(guess){
     }
   }
 
-  /* yellows */
+  for (let i = 0; i < 5; i++) {
 
-  for(let i=0; i<5; i++){
-
-    if(result[i] === "gray"){
+    if (result[i] === "gray") {
 
       const index =
         temp.indexOf(guess[i]);
 
-      if(index !== -1){
+      if (index !== -1) {
 
         result[i] = "yellow";
 
@@ -315,7 +347,7 @@ function evaluate(guess){
   return result;
 }
 
-function updateKey(letter, color){
+function updateKey(letter, color) {
 
   const priority = {
     gray: 1,
@@ -326,18 +358,19 @@ function updateKey(letter, color){
   const previous =
     keyColors[letter];
 
-  if(
+  if (
     !previous ||
-    priority[color] > priority[previous]
-  ){
+    priority[color] >
+    priority[previous]
+  ) {
 
     keyColors[letter] = color;
 
     document
       .querySelectorAll(".key")
-      .forEach(key=>{
+      .forEach(key => {
 
-        if(key.innerText === letter){
+        if (key.innerText === letter) {
 
           key.classList.remove(
             "gray",
@@ -351,7 +384,7 @@ function updateKey(letter, color){
   }
 }
 
-function shake(){
+function shake() {
 
   const rowDiv =
     board.children[row];
@@ -369,7 +402,7 @@ function shake(){
   });
 }
 
-function showPopup(win){
+function showPopup(win) {
 
   document
     .getElementById("popup")
@@ -379,7 +412,7 @@ function showPopup(win){
     .getElementById("popup-text")
     .innerText =
       win
-        ? "Genius"
+        ? "Congratulations!"
         : target;
 
   let stats =
@@ -393,11 +426,11 @@ function showPopup(win){
 
   stats.played++;
 
-  if(win){
+  if (win) {
     stats.wins++;
     stats.streak++;
   }
-  else{
+  else {
     stats.streak = 0;
   }
 
@@ -417,77 +450,38 @@ function showPopup(win){
   updateCountdown();
 }
 
-function updateCountdown(){
+function updateCountdown() {
 
   const now = new Date();
 
   const tomorrow = new Date();
 
-  tomorrow.setHours(24,0,0,0);
+  tomorrow.setHours(24, 0, 0, 0);
 
   const diff =
     tomorrow - now;
 
   const h =
-    Math.floor(diff/1000/60/60);
+    Math.floor(diff / 1000 / 60 / 60);
 
   const m =
-    Math.floor(diff/1000/60)%60;
+    Math.floor(diff / 1000 / 60) % 60;
 
   const s =
-    Math.floor(diff/1000)%60;
+    Math.floor(diff / 1000) % 60;
 
   document
     .getElementById("countdown")
     .innerText =
       `Next word in ${h}:${m}:${s}`;
 
-  setTimeout(updateCountdown,1000);
+  setTimeout(updateCountdown, 1000);
 }
 
-function showCopiedToast(){
+function copyResult() {
 
-  const toast =
-    document.createElement("div");
-
-  toast.className = "toast";
-
-  toast.innerText = "Copied results to clipboard";
-
-  document.body.appendChild(toast);
-
-  setTimeout(()=>{
-    toast.classList.add("show");
-  },10);
-
-  setTimeout(()=>{
-
-    toast.classList.remove("show");
-
-    setTimeout(()=>{
-      toast.remove();
-    },300);
-
-  },1800);
-}
-
-function getPuzzleNumber(){
-
-  const start =
-    new Date(2022,0,1);
-
-  const today =
-    new Date();
-
-  return Math.floor(
-    (today - start) /
-    (1000*60*60*24)
-  );
-}
-
-function copyResult(){
-
-  const puzzleNumber = getPuzzleNumber();
+  const puzzleNumber =
+    getPuzzleNumber();
 
   const score =
     row >= 6 && current !== target
@@ -497,17 +491,17 @@ function copyResult(){
   let text =
     `Wordle ${puzzleNumber} ${score}/6\n\n`;
 
-  guesses.forEach(r=>{
+  guesses.forEach(r => {
 
-    r.forEach(c=>{
+    r.forEach(c => {
 
-      if(c === "green"){
+      if (c === "green") {
         text += "🟩";
       }
-      else if(c === "yellow"){
+      else if (c === "yellow") {
         text += "🟨";
       }
-      else{
+      else {
         text += "⬛";
       }
     });
@@ -520,31 +514,54 @@ function copyResult(){
   showCopiedToast();
 }
 
-function restart(){
-  location.reload();
+function showCopiedToast() {
+
+  const toast =
+    document.createElement("div");
+
+  toast.className = "toast";
+
+  toast.innerText =
+    "Copied results to clipboard";
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add("show");
+  }, 10);
+
+  setTimeout(() => {
+
+    toast.classList.remove("show");
+
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+
+  }, 1800);
 }
 
-function updateTimer(){
+function updateTimer() {
 
   const now = new Date();
 
   const tomorrow = new Date();
 
-  tomorrow.setHours(24,0,0,0);
+  tomorrow.setHours(24, 0, 0, 0);
 
   const diff =
     tomorrow - now;
 
   const h =
-    Math.floor(diff/1000/60/60);
+    Math.floor(diff / 1000 / 60 / 60);
 
   const m =
-    Math.floor(diff/1000/60)%60;
+    Math.floor(diff / 1000 / 60) % 60;
 
   document
     .getElementById("timer")
     .innerText =
       `Next puzzle in ${h}h ${m}m`;
 
-  setTimeout(updateTimer,60000);
+  setTimeout(updateTimer, 60000);
 }

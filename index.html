@@ -11,11 +11,90 @@
 
 <body>
 
+  <!-- HELP MODAL -->
+
+  <div id="help-modal">
+
+    <div id="help-content">
+
+      <div id="help-close">✕</div>
+
+      <h2>How To Play</h2>
+
+      <p>
+        Guess the hidden word in 6 tries.
+      </p>
+
+      <p>
+        Each guess must be a valid 5-letter word.
+        Hit the enter button to submit.
+      </p>
+
+      <p>
+        After each guess, the color of the tiles
+        will change to show how close your guess was.
+      </p>
+
+      <hr>
+
+      <h3>Examples</h3>
+
+      <div class="example-row">
+
+        <div class="example-tile green">G</div>
+        <div class="example-tile">A</div>
+        <div class="example-tile">M</div>
+        <div class="example-tile">E</div>
+        <div class="example-tile">S</div>
+
+      </div>
+
+      <p>
+        The letter G is in the word and in the correct spot.
+      </p>
+
+      <div class="example-row">
+
+        <div class="example-tile">H</div>
+        <div class="example-tile yellow">O</div>
+        <div class="example-tile">T</div>
+        <div class="example-tile">E</div>
+        <div class="example-tile">L</div>
+
+      </div>
+
+      <p>
+        The letter O is in the word but in the wrong spot.
+      </p>
+
+      <div class="example-row">
+
+        <div class="example-tile">C</div>
+        <div class="example-tile">L</div>
+        <div class="example-tile">I</div>
+        <div class="example-tile gray">C</div>
+        <div class="example-tile">K</div>
+
+      </div>
+
+      <p>
+        The letter C is not in the word in any spot.
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- MAIN APP -->
+
   <div class="container">
 
     <header>
+
       <h1>WORDLE</h1>
+
       <div id="timer"></div>
+
     </header>
 
     <main>
@@ -27,6 +106,8 @@
     </main>
 
   </div>
+
+  <!-- WIN MODAL -->
 
   <div id="popup" class="hidden">
 

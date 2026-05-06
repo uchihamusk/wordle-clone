@@ -13,6 +13,8 @@ let keyColors = {};
 
 let animating = false;
 
+let unlimitedMode = false;
+
 const board =
   document.getElementById("board");
 
@@ -42,7 +44,18 @@ function getPuzzleNumber() {
   );
 }
 
+function getRandomWord() {
+
+  return WORDS[
+    Math.floor(Math.random() * WORDS.length)
+  ];
+}
+
 function getDailyWord() {
+
+  if (unlimitedMode) {
+    return getRandomWord();
+  }
 
   const puzzleNumber =
     getPuzzleNumber();
@@ -65,11 +78,17 @@ function startGame() {
 
   keyColors = {};
 
+  animating = false;
+
   createBoard();
 
   createKeyboard();
 
   updateTimer();
+
+  document
+    .getElementById("popup")
+    .classList.add("hidden");
 
   if (!localStorage.getItem("seenHelp")) {
 
@@ -210,9 +229,7 @@ function press(letter) {
   tile.classList.add("pop");
 
   setTimeout(() => {
-
     tile.classList.remove("pop");
-
   }, 120);
 
   current += letter;
@@ -242,21 +259,16 @@ document.addEventListener("keydown", e => {
   if (animating) return;
 
   if (e.key === "Enter") {
-
     submit();
-
     return;
   }
 
   if (e.key === "Backspace") {
-
     backspace();
-
     return;
   }
 
   if (/^[a-zA-Z]$/.test(e.key)) {
-
     press(e.key.toUpperCase());
   }
 });
@@ -490,6 +502,20 @@ function showPopup(win) {
   updateCountdown();
 }
 
+function admirePuzzle() {
+
+  document
+    .getElementById("popup")
+    .classList.add("hidden");
+}
+
+function startUnlimitedMode() {
+
+  unlimitedMode = true;
+
+  startGame();
+}
+
 function updateCountdown() {
 
   const now =
@@ -515,7 +541,9 @@ function updateCountdown() {
   document
     .getElementById("countdown")
     .innerText =
-      `Next word in ${h}:${m}:${s}`;
+      unlimitedMode
+        ? "Unlimited Mode Active"
+        : `Next word in ${h}:${m}:${s}`;
 
   setTimeout(
     updateCountdown,
@@ -534,7 +562,9 @@ function copyResult() {
       : (row + 1);
 
   let text =
-    `Wordle ${puzzleNumber} ${score}/6\n\n`;
+    unlimitedMode
+      ? `Unlimited Wordle ${score}/6\n\n`
+      : `Wordle ${puzzleNumber} ${score}/6\n\n`;
 
   guesses.forEach(r => {
 
@@ -574,9 +604,7 @@ function showCopiedToast() {
   document.body.appendChild(toast);
 
   setTimeout(() => {
-
     toast.classList.add("show");
-
   }, 10);
 
   setTimeout(() => {
@@ -584,9 +612,7 @@ function showCopiedToast() {
     toast.classList.remove("show");
 
     setTimeout(() => {
-
       toast.remove();
-
     }, 300);
 
   }, 1800);
@@ -605,9 +631,7 @@ function showAlert(message) {
   document.body.appendChild(toast);
 
   setTimeout(() => {
-
     toast.classList.add("show");
-
   }, 10);
 
   setTimeout(() => {
@@ -615,9 +639,7 @@ function showAlert(message) {
     toast.classList.remove("show");
 
     setTimeout(() => {
-
       toast.remove();
-
     }, 200);
 
   }, 1400);
@@ -645,7 +667,9 @@ function updateTimer() {
   document
     .getElementById("timer")
     .innerText =
-      `Next puzzle in ${h}h ${m}m`;
+      unlimitedMode
+        ? "Unlimited Mode"
+        : `Next puzzle in ${h}h ${m}m`;
 
   setTimeout(
     updateTimer,

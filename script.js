@@ -445,18 +445,66 @@ function updateCountdown(){
   setTimeout(updateCountdown,1000);
 }
 
+function showCopiedToast(){
+
+  const toast =
+    document.createElement("div");
+
+  toast.className = "toast";
+
+  toast.innerText = "Copied results to clipboard";
+
+  document.body.appendChild(toast);
+
+  setTimeout(()=>{
+    toast.classList.add("show");
+  },10);
+
+  setTimeout(()=>{
+
+    toast.classList.remove("show");
+
+    setTimeout(()=>{
+      toast.remove();
+    },300);
+
+  },1800);
+}
+
+function getPuzzleNumber(){
+
+  const start =
+    new Date(2022,0,1);
+
+  const today =
+    new Date();
+
+  return Math.floor(
+    (today - start) /
+    (1000*60*60*24)
+  );
+}
+
 function copyResult(){
 
-  let text = "Word Guess\n\n";
+  const puzzleNumber = getPuzzleNumber();
 
-  guesses.forEach(row=>{
+  const score =
+    row >= 6 && current !== target
+      ? "X"
+      : (row + 1);
 
-    row.forEach(color=>{
+  let text =
+    `Wordle ${puzzleNumber} ${score}/6\n\n`;
 
-      if(color === "green"){
+  guesses.forEach(r=>{
+
+    r.forEach(c=>{
+
+      if(c === "green"){
         text += "🟩";
       }
-      else if(color === "yellow"){
+      else if(c === "yellow"){
         text += "🟨";
       }
       else{
@@ -469,7 +517,7 @@ function copyResult(){
 
   navigator.clipboard.writeText(text);
 
-  alert("Copied!");
+  showCopiedToast();
 }
 
 function restart(){

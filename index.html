@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Word Guess</title>
-  <link rel="stylesheet" href="style.css"/>
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <div class="container">
@@ -16,27 +19,35 @@
     </header>
 
     <main>
+
       <div id="board"></div>
+
       <div id="keyboard"></div>
+
     </main>
 
   </div>
 
   <div id="popup" class="hidden">
+
     <div id="popup-content">
+
       <h2 id="popup-text"></h2>
 
       <div id="stats"></div>
 
       <p id="countdown"></p>
 
-      <div class="popup-buttons">
-        <button onclick="copyResult()">Share</button>
-        <button onclick="restart()">Play Again</button>
-      </div>
+      <button id="share-btn" onclick="copyResult()">
+        Share
+      </button>
+
     </div>
+
   </div>
 
   <script src="script.js"></script>
+
 </body>
+
 </html>

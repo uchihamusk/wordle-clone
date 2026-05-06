@@ -13,7 +13,8 @@ let keyColors = {};
 
 let animating = false;
 
-const board = document.getElementById("board");
+const board =
+  document.getElementById("board");
 
 fetch("words.txt")
   .then(res => res.text())
@@ -29,9 +30,11 @@ fetch("words.txt")
 
 function getPuzzleNumber() {
 
-  const start = new Date(2022, 0, 1);
+  const start =
+    new Date(2022, 0, 1);
 
-  const today = new Date();
+  const today =
+    new Date();
 
   return Math.floor(
     (today - start) /
@@ -67,6 +70,24 @@ function startGame() {
   createKeyboard();
 
   updateTimer();
+
+  if (!localStorage.getItem("seenHelp")) {
+
+    localStorage.setItem(
+      "seenHelp",
+      "true"
+    );
+
+    document
+      .getElementById("help-modal")
+      .style.display = "flex";
+  }
+  else {
+
+    document
+      .getElementById("help-modal")
+      .style.display = "none";
+  }
 }
 
 function createBoard() {
@@ -115,6 +136,7 @@ function createKeyboard() {
     rowDiv.className = "key-row";
 
     if (index === 2) {
+
       rowDiv.appendChild(
         createKey("ENTER", true)
       );
@@ -125,10 +147,10 @@ function createKeyboard() {
       rowDiv.appendChild(
         createKey(letter)
       );
-
     });
 
     if (index === 2) {
+
       rowDiv.appendChild(
         createKey("⌫", true)
       );
@@ -151,7 +173,8 @@ function createKey(label, wide = false) {
 
   key.innerText = label;
 
-  key.onclick = () => handleKey(label);
+  key.onclick =
+    () => handleKey(label);
 
   return key;
 }
@@ -187,7 +210,9 @@ function press(letter) {
   tile.classList.add("pop");
 
   setTimeout(() => {
+
     tile.classList.remove("pop");
+
   }, 120);
 
   current += letter;
@@ -217,16 +242,21 @@ document.addEventListener("keydown", e => {
   if (animating) return;
 
   if (e.key === "Enter") {
+
     submit();
+
     return;
   }
 
   if (e.key === "Backspace") {
+
     backspace();
+
     return;
   }
 
   if (/^[a-zA-Z]$/.test(e.key)) {
+
     press(e.key.toUpperCase());
   }
 });
@@ -234,12 +264,18 @@ document.addEventListener("keydown", e => {
 function submit() {
 
   if (current.length < 5) {
+
     shake();
+
     return;
   }
 
   if (!WORDS.includes(current)) {
+
     shake();
+
+    showAlert("Not in word list");
+
     return;
   }
 
@@ -250,7 +286,8 @@ function submit() {
 
   guesses.push(colors);
 
-  const guessedWord = current;
+  const guessedWord =
+    current;
 
   for (let i = 0; i < 5; i++) {
 
@@ -427,10 +464,13 @@ function showPopup(win) {
   stats.played++;
 
   if (win) {
+
     stats.wins++;
+
     stats.streak++;
   }
   else {
+
     stats.streak = 0;
   }
 
@@ -452,9 +492,11 @@ function showPopup(win) {
 
 function updateCountdown() {
 
-  const now = new Date();
+  const now =
+    new Date();
 
-  const tomorrow = new Date();
+  const tomorrow =
+    new Date();
 
   tomorrow.setHours(24, 0, 0, 0);
 
@@ -475,7 +517,10 @@ function updateCountdown() {
     .innerText =
       `Next word in ${h}:${m}:${s}`;
 
-  setTimeout(updateCountdown, 1000);
+  setTimeout(
+    updateCountdown,
+    1000
+  );
 }
 
 function copyResult() {
@@ -509,7 +554,9 @@ function copyResult() {
     text += "\n";
   });
 
-  navigator.clipboard.writeText(text);
+  navigator
+    .clipboard
+    .writeText(text);
 
   showCopiedToast();
 }
@@ -527,7 +574,9 @@ function showCopiedToast() {
   document.body.appendChild(toast);
 
   setTimeout(() => {
+
     toast.classList.add("show");
+
   }, 10);
 
   setTimeout(() => {
@@ -535,17 +584,52 @@ function showCopiedToast() {
     toast.classList.remove("show");
 
     setTimeout(() => {
+
       toast.remove();
+
     }, 300);
 
   }, 1800);
 }
 
+function showAlert(message) {
+
+  const toast =
+    document.createElement("div");
+
+  toast.className =
+    "alert-toast";
+
+  toast.innerText = message;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+
+    toast.classList.add("show");
+
+  }, 10);
+
+  setTimeout(() => {
+
+    toast.classList.remove("show");
+
+    setTimeout(() => {
+
+      toast.remove();
+
+    }, 200);
+
+  }, 1400);
+}
+
 function updateTimer() {
 
-  const now = new Date();
+  const now =
+    new Date();
 
-  const tomorrow = new Date();
+  const tomorrow =
+    new Date();
 
   tomorrow.setHours(24, 0, 0, 0);
 
@@ -563,5 +647,17 @@ function updateTimer() {
     .innerText =
       `Next puzzle in ${h}h ${m}m`;
 
-  setTimeout(updateTimer, 60000);
+  setTimeout(
+    updateTimer,
+    60000
+  );
 }
+
+document
+  .getElementById("help-close")
+  .onclick = () => {
+
+    document
+      .getElementById("help-modal")
+      .style.display = "none";
+};

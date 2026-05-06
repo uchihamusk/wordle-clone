@@ -4,8 +4,11 @@
 
 body {
   margin: 0;
+
   background: #121213;
+
   color: white;
+
   font-family: Arial, Helvetica, sans-serif;
 
   display: flex;
@@ -15,13 +18,17 @@ body {
 .container {
   width: 100%;
   max-width: 500px;
+
   min-height: 100vh;
 
   display: flex;
   flex-direction: column;
 }
 
+/* HEADER */
+
 header {
+
   border-bottom: 1px solid #3a3a3c;
 
   padding: 10px 0;
@@ -30,6 +37,7 @@ header {
 }
 
 h1 {
+
   margin: 0;
 
   font-size: 36px;
@@ -39,6 +47,7 @@ h1 {
 }
 
 #timer {
+
   margin-top: 6px;
 
   color: #818384;
@@ -46,9 +55,10 @@ h1 {
   font-size: 13px;
 }
 
-/* BOARD */
+/* MAIN */
 
 main {
+
   flex: 1;
 
   display: flex;
@@ -56,7 +66,10 @@ main {
   justify-content: space-between;
 }
 
+/* BOARD */
+
 #board {
+
   display: grid;
 
   gap: 8px;
@@ -67,6 +80,7 @@ main {
 }
 
 .row {
+
   display: grid;
 
   grid-template-columns: repeat(5, 62px);
@@ -75,6 +89,7 @@ main {
 }
 
 .tile {
+
   width: 62px;
   height: 62px;
 
@@ -86,6 +101,7 @@ main {
 
   font-size: 2rem;
   font-weight: bold;
+
   text-transform: uppercase;
 
   user-select: none;
@@ -100,29 +116,36 @@ main {
   border-color: #565758;
 }
 
-/* COLORS */
+/* TILE COLORS */
 
 .green {
+
   background: #538d4e;
   border-color: #538d4e;
+
   color: white;
 }
 
 .yellow {
+
   background: #b59f3b;
   border-color: #b59f3b;
+
   color: white;
 }
 
 .gray {
+
   background: #3a3a3c;
   border-color: #3a3a3c;
+
   color: white;
 }
 
-/* POP */
+/* POP ANIMATION */
 
 @keyframes pop {
+
   0% {
     transform: scale(0.8);
   }
@@ -143,12 +166,14 @@ main {
 /* KEYBOARD */
 
 #keyboard {
+
   margin-bottom: 10px;
 
   user-select: none;
 }
 
 .key-row {
+
   display: flex;
 
   justify-content: center;
@@ -161,13 +186,16 @@ main {
 }
 
 .key {
+
   background: #818384;
+
   color: white;
 
   height: 58px;
   min-width: 43px;
 
   margin: 3px;
+
   border-radius: 4px;
 
   display: flex;
@@ -193,6 +221,7 @@ main {
 }
 
 .key.wide {
+
   min-width: 65px;
 
   font-size: 12px;
@@ -213,6 +242,7 @@ main {
 /* POPUP */
 
 #popup {
+
   position: fixed;
 
   inset: 0;
@@ -229,6 +259,7 @@ main {
 }
 
 #popup-content {
+
   width: 300px;
 
   background: #121213;
@@ -241,6 +272,7 @@ main {
 }
 
 #share-btn {
+
   margin-top: 20px;
 
   width: 100%;
@@ -248,6 +280,7 @@ main {
   border: none;
 
   background: #538d4e;
+
   color: white;
 
   padding: 16px;
@@ -267,6 +300,7 @@ main {
 /* TOAST */
 
 .toast {
+
   position: fixed;
 
   top: 20px;
@@ -275,6 +309,7 @@ main {
   transform: translateX(-50%);
 
   background: white;
+
   color: black;
 
   padding: 14px 20px;
@@ -292,4 +327,114 @@ main {
 
 .toast.show {
   opacity: 1;
+}
+
+/* ALERT TOAST */
+
+.alert-toast {
+
+  position: fixed;
+
+  top: 100px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  background: white;
+
+  color: black;
+
+  padding: 14px 18px;
+
+  border-radius: 4px;
+
+  font-weight: bold;
+
+  opacity: 0;
+
+  transition: opacity 0.2s ease;
+
+  z-index: 9999;
+}
+
+.alert-toast.show {
+  opacity: 1;
+}
+
+/* HELP MODAL */
+
+#help-modal {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0,0,0,0.85);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 5000;
+}
+
+#help-content {
+
+  width: 90%;
+  max-width: 520px;
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  background: #121213;
+
+  border: 1px solid #3a3a3c;
+
+  padding: 24px;
+
+  position: relative;
+}
+
+#help-close {
+
+  position: absolute;
+
+  top: 10px;
+  right: 15px;
+
+  cursor: pointer;
+
+  font-size: 24px;
+
+  color: #818384;
+}
+
+#help-content p {
+
+  line-height: 1.5;
+}
+
+.example-row {
+
+  display: flex;
+
+  gap: 6px;
+
+  margin: 20px 0 10px;
+}
+
+.example-tile {
+
+  width: 52px;
+  height: 52px;
+
+  border: 2px solid #3a3a3c;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2rem;
+  font-weight: bold;
 }

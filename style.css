@@ -1,101 +1,240 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
   background: #121213;
   color: white;
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  border-bottom: 1px solid #3a3a3c;
+  padding: 10px 0;
   text-align: center;
 }
 
 h1 {
-  letter-spacing: 4px;
-  margin: 10px;
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 0.2rem;
 }
+
+#timer {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #818384;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* BOARD */
 
 #board {
   display: grid;
   gap: 8px;
   justify-content: center;
-  margin: 20px 0;
+  margin-top: 20px;
 }
 
 .row {
   display: grid;
-  grid-template-columns: repeat(5, 64px);
+  grid-template-columns: repeat(5, 62px);
   gap: 8px;
 }
 
 .tile {
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
+
   border: 2px solid #3a3a3c;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   font-size: 2rem;
   font-weight: bold;
   text-transform: uppercase;
+
+  user-select: none;
+
+  transition:
+    transform 250ms ease,
+    background-color 250ms ease,
+    border-color 250ms ease;
 }
 
-.green { background: #538d4e; border: none; }
-.yellow { background: #b59f3b; border: none; }
-.gray { background: #3a3a3c; border: none; }
+.filled {
+  border-color: #565758;
+}
 
-/* animations */
+/* TILE COLORS */
+
+.green {
+  background-color: #538d4e;
+  border-color: #538d4e;
+  color: white;
+}
+
+.yellow {
+  background-color: #b59f3b;
+  border-color: #b59f3b;
+  color: white;
+}
+
+.gray {
+  background-color: #3a3a3c;
+  border-color: #3a3a3c;
+  color: white;
+}
+
+/* POP */
+
 @keyframes pop {
-  0% { transform: scale(0.8); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.8);
+  }
+
+  40% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .pop {
-  animation: pop 0.1s ease;
+  animation: pop 120ms ease;
 }
 
-.flip {
-  transform: rotateX(90deg);
-  transition: transform 0.3s;
-}
+/* KEYBOARD */
 
-/* keyboard */
 #keyboard {
-  margin-top: 10px;
+  margin-bottom: 10px;
+  user-select: none;
 }
 
 .key-row {
   display: flex;
   justify-content: center;
-  margin: 5px 0;
+  margin: 8px 0;
+}
+
+.key-row:nth-child(2) {
+  margin-left: 30px;
 }
 
 .key {
-  background: #3a3a3c;
-  padding: 10px;
+  background: #818384;
+  color: white;
+
+  height: 58px;
+  min-width: 43px;
+
   margin: 3px;
   border-radius: 4px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 14px;
+  font-weight: bold;
+
   cursor: pointer;
-  min-width: 30px;
-  text-align: center;
+
+  transition:
+    background-color 180ms ease,
+    transform 80ms ease;
+}
+
+.key:hover {
+  filter: brightness(1.05);
+}
+
+.key:active {
+  transform: scale(0.92);
 }
 
 .key.wide {
-  min-width: 60px;
+  min-width: 65px;
+  font-size: 12px;
 }
 
-/* popup */
+.key.green {
+  background: #538d4e;
+}
+
+.key.yellow {
+  background: #b59f3b;
+}
+
+.key.gray {
+  background: #3a3a3c;
+}
+
+/* POPUP */
+
 #popup {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.85);
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none !important;
+}
 
 #popup-content {
   background: #121213;
-  padding: 20px;
-  margin: 20% auto;
-  width: 260px;
-  border: 1px solid #555;
+  border: 1px solid #3a3a3c;
+
+  padding: 30px;
+  width: 300px;
+
+  text-align: center;
+}
+
+.popup-buttons {
+  margin-top: 20px;
+}
+
+button {
+  background: #538d4e;
+  border: none;
+  color: white;
+
+  padding: 12px 18px;
+  margin: 5px;
+
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  filter: brightness(1.1);
 }

@@ -3,6 +3,7 @@
 }
 
 body {
+
   margin: 0;
 
   background: #121213;
@@ -16,6 +17,7 @@ body {
 }
 
 .container {
+
   width: 100%;
   max-width: 500px;
 
@@ -41,6 +43,7 @@ h1 {
   margin: 0;
 
   font-size: 36px;
+
   font-weight: bold;
 
   letter-spacing: 0.2rem;
@@ -119,30 +122,21 @@ main {
 /* TILE COLORS */
 
 .green {
-
   background: #538d4e;
   border-color: #538d4e;
-
-  color: white;
 }
 
 .yellow {
-
   background: #b59f3b;
   border-color: #b59f3b;
-
-  color: white;
 }
 
 .gray {
-
   background: #3a3a3c;
   border-color: #3a3a3c;
-
-  color: white;
 }
 
-/* POP ANIMATION */
+/* POP */
 
 @keyframes pop {
 
@@ -247,7 +241,7 @@ main {
 
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0,0,0,0.85);
 
   display: flex;
   justify-content: center;
@@ -260,7 +254,7 @@ main {
 
 #popup-content {
 
-  width: 300px;
+  width: 320px;
 
   background: #121213;
 
@@ -271,30 +265,53 @@ main {
   text-align: center;
 }
 
-#share-btn {
-
-  margin-top: 20px;
+.main-btn,
+.secondary-btn {
 
   width: 100%;
-
-  border: none;
-
-  background: #538d4e;
-
-  color: white;
 
   padding: 16px;
 
   border-radius: 999px;
 
   font-size: 16px;
+
   font-weight: bold;
 
   cursor: pointer;
+
+  margin-top: 14px;
+
+  transition: 0.2s ease;
 }
 
-#share-btn:hover {
+.main-btn {
+
+  border: none;
+
+  background: #538d4e;
+
+  color: white;
+}
+
+.main-btn:hover {
   filter: brightness(1.05);
+}
+
+.secondary-btn {
+
+  background: transparent;
+
+  border: 2px solid white;
+
+  color: white;
+}
+
+.secondary-btn:hover {
+
+  background: white;
+
+  color: black;
 }
 
 /* TOAST */
@@ -411,7 +428,6 @@ main {
 }
 
 #help-content p {
-
   line-height: 1.5;
 }
 

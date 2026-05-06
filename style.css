@@ -6,7 +6,8 @@ body {
   margin: 0;
   background: #121213;
   color: white;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+
   display: flex;
   justify-content: center;
 }
@@ -15,48 +16,61 @@ body {
   width: 100%;
   max-width: 500px;
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
 }
 
 header {
   border-bottom: 1px solid #3a3a3c;
+
   padding: 10px 0;
+
   text-align: center;
 }
 
 h1 {
   margin: 0;
+
   font-size: 36px;
-  font-weight: 700;
+  font-weight: bold;
+
   letter-spacing: 0.2rem;
 }
 
 #timer {
-  margin-top: 5px;
-  font-size: 13px;
+  margin-top: 6px;
+
   color: #818384;
+
+  font-size: 13px;
 }
+
+/* BOARD */
 
 main {
   flex: 1;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* BOARD */
-
 #board {
   display: grid;
+
   gap: 8px;
+
   justify-content: center;
-  margin-top: 20px;
+
+  margin-top: 30px;
 }
 
 .row {
   display: grid;
+
   grid-template-columns: repeat(5, 62px);
+
   gap: 8px;
 }
 
@@ -86,22 +100,22 @@ main {
   border-color: #565758;
 }
 
-/* TILE COLORS */
+/* COLORS */
 
 .green {
-  background-color: #538d4e;
+  background: #538d4e;
   border-color: #538d4e;
   color: white;
 }
 
 .yellow {
-  background-color: #b59f3b;
+  background: #b59f3b;
   border-color: #b59f3b;
   color: white;
 }
 
 .gray {
-  background-color: #3a3a3c;
+  background: #3a3a3c;
   border-color: #3a3a3c;
   color: white;
 }
@@ -130,12 +144,15 @@ main {
 
 #keyboard {
   margin-bottom: 10px;
+
   user-select: none;
 }
 
 .key-row {
   display: flex;
+
   justify-content: center;
+
   margin: 8px 0;
 }
 
@@ -177,6 +194,7 @@ main {
 
 .key.wide {
   min-width: 65px;
+
   font-size: 12px;
 }
 
@@ -196,8 +214,10 @@ main {
 
 #popup {
   position: fixed;
+
   inset: 0;
-  background: rgba(0,0,0,0.82);
+
+  background: rgba(0, 0, 0, 0.85);
 
   display: flex;
   justify-content: center;
@@ -209,38 +229,44 @@ main {
 }
 
 #popup-content {
+  width: 300px;
+
   background: #121213;
+
   border: 1px solid #3a3a3c;
 
   padding: 30px;
-  width: 300px;
 
   text-align: center;
 }
 
-.popup-buttons {
+#share-btn {
   margin-top: 20px;
-}
 
-button {
-  background: #538d4e;
+  width: 100%;
+
   border: none;
+
+  background: #538d4e;
   color: white;
 
-  padding: 12px 18px;
-  margin: 5px;
+  padding: 16px;
 
+  border-radius: 999px;
+
+  font-size: 16px;
   font-weight: bold;
+
   cursor: pointer;
-  border-radius: 4px;
 }
 
-button:hover {
-  filter: brightness(1.1);
+#share-btn:hover {
+  filter: brightness(1.05);
 }
+
+/* TOAST */
 
 .toast {
-
   position: fixed;
 
   top: 20px;
@@ -251,12 +277,11 @@ button:hover {
   background: white;
   color: black;
 
-  padding: 14px 22px;
+  padding: 14px 20px;
 
   border-radius: 6px;
 
   font-weight: bold;
-  font-size: 14px;
 
   opacity: 0;
 
